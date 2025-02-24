@@ -122,71 +122,70 @@
                         <h2 class="text-xl font-semibold text-gray-900">Current Commissions</h2>
                     </div>
                     <div class="divide-y divide-gray-200">
-                        <!-- Commission Item -->
-                        <div class="p-6 hover:bg-gray-50 transition-colors">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center space-x-4">
-                                    <img src="/api/placeholder/48/48" class="w-12 h-12 rounded-full" alt="Client avatar">
-                                    <div>
-                                        <h3 class="text-lg font-medium text-gray-900">Character Design</h3>
-                                        <p class="text-sm text-gray-600">for John Smith</p>
-                                    </div>
-                                </div>
-                                <span class="bg-yellow-100 text-yellow-800 text-sm px-3 py-1 rounded-full">In Progress</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-6">
-                                    <div>
-                                        <p class="text-sm text-gray-500">Due Date</p>
-                                        <p class="text-sm font-medium text-gray-900">Mar 15, 2025</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm text-gray-500">Payment</p>
-                                        <p class="text-sm font-medium text-gray-900">$350</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm text-gray-500">Progress</p>
-                                        <div class="w-32 h-2 bg-gray-200 rounded-full mt-2">
-                                            <div class="w-2/3 h-2 bg-purple-600 rounded-full"></div>
+                        @if($commissions->count() > 0)
+                            @foreach($commissions as $commission)
+                            <div class="p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <img src="{{ $commission->client->avatar_url ?? '/api/placeholder/48/48' }}" class="w-12 h-12 rounded-full" alt="Client avatar">
+                                        <div>
+                                            <h3 class="text-lg font-medium text-gray-900">{{ $commission->title }}</h3>
+                                            <p class="text-sm text-gray-600">for {{ $commission->client->name }}</p>
                                         </div>
                                     </div>
+                                    <span class="bg-yellow-100 text-yellow-800 text-sm px-3 py-1 rounded-full">{{ ucwords(str_replace(['_', '-'], ' ', trim($commission->status))) }}</span>
                                 </div>
-                                <button class="text-purple-600 hover:text-purple-700 font-medium text-sm">Update Progress</button>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-6">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Due Date</p>
+                                            <p class="text-sm font-medium text-gray-900">{{ $commission->due_date->format('M d, Y') }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Payment</p>
+                                            <p class="text-sm font-medium text-gray-900">{{ $commission->currency }} {{ number_format($commission->price, 2) }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Progress</p>
+                                            <div class="w-32 h-2 bg-gray-200 rounded-full mt-2">
+                                                @php
+                                                    $progress = match($commission->status) {
+                                                        'pending' => '0',
+                                                        'sketching' => '25',
+                                                        'inking' => '50',
+                                                        'coloring' => '75',
+                                                        'final_review' => '90',
+                                                        'completed' => '100',
+                                                        default => '0'
+                                                    };
+                                                @endphp
+                                                <div class="h-2 bg-purple-600 rounded-full" style="width: {{ $progress }}%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('commissions.show', $commission) }}" class="text-purple-600 hover:text-purple-700 font-medium text-sm">View Details</a>
+                                </div>
                             </div>
-                        </div>
+                            @endforeach
 
-                        <!-- Another Commission Item -->
-                        <div class="p-6 hover:bg-gray-50 transition-colors">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center space-x-4">
-                                    <img src="/api/placeholder/48/48" class="w-12 h-12 rounded-full" alt="Client avatar">
-                                    <div>
-                                        <h3 class="text-lg font-medium text-gray-900">Custom Illustration</h3>
-                                        <p class="text-sm text-gray-600">for Emma Davis</p>
-                                    </div>
-                                </div>
-                                <span class="bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full">Needs Review</span>
+                            <!-- Pagination -->
+                            <div class="px-6 py-4 border-t border-gray-200">
+                                {{ $commissions->links() }}
                             </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-6">
-                                    <div>
-                                        <p class="text-sm text-gray-500">Due Date</p>
-                                        <p class="text-sm font-medium text-gray-900">Mar 20, 2025</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm text-gray-500">Payment</p>
-                                        <p class="text-sm font-medium text-gray-900">$275</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm text-gray-500">Progress</p>
-                                        <div class="w-32 h-2 bg-gray-200 rounded-full mt-2">
-                                            <div class="w-full h-2 bg-purple-600 rounded-full"></div>
-                                        </div>
-                                    </div>
+                        @else
+                            <div class="p-12 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
+                                <h3 class="mt-4 text-lg font-medium text-gray-900">No Active Commissions</h3>
+                                <p class="mt-2 text-sm text-gray-500">You don't have any active commissions at the moment.</p>
+                                <div class="mt-6">
+                                    <a href="{{ route('services.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                        Open Commission Slots
+                                    </a>
                                 </div>
-                                <button class="text-purple-600 hover:text-purple-700 font-medium text-sm">Review Feedback</button>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

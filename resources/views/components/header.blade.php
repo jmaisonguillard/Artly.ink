@@ -60,11 +60,12 @@
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
                     </button>
-                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-32 w-48 bg-white rounded-lg shadow-lg py-2">
+                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-64 w-48 bg-white rounded-lg shadow-lg py-2">
                         <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-gray-600 hover:bg-purple-50 hover:text-purple-600">Dashboard</a>
                         @if(Auth::user()->is_artist)
-                        <a href="{{ route('commission-services') }}" class="block px-4 py-2 text-gray-600 hover:bg-purple-50 hover:text-purple-600">Commission Services</a>
+                        <a href="{{ route('services.index') }}" class="block px-4 py-2 text-gray-600 hover:bg-purple-50 hover:text-purple-600">Commission Services</a>
                         @endif
+                        <a href="{{ route('boards.index') }}" class="block px-4 py-2 text-gray-600 hover:bg-purple-50 hover:text-purple-600">Board</a>
                         <a href="{{ route('settings') }}" class="block px-4 py-2 text-gray-600 hover:bg-purple-50 hover:text-purple-600">Settings</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -198,10 +199,13 @@
                             Dashboard
                         </a>
                         @if(Auth::user()->is_artist)
-                        <a href="{{ route('commission-services') }}" class="block px-3 py-3 text-gray-600 hover:text-purple-600 border-b border-gray-100">
+                        <a href="{{ route('services.index') }}" class="block px-3 py-3 text-gray-600 hover:text-purple-600 border-b border-gray-100">
                             Commission Services
                         </a>
                         @endif
+                        <a href="{{ route('boards.index') }}" class="block px-3 py-3 text-gray-600 hover:text-purple-600 border-b border-gray-100">
+                            Boards
+                        </a>
                         <a href="{{ route('settings') }}" class="block px-3 py-3 text-gray-600 hover:text-purple-600 border-b border-gray-100">
                             Settings
                         </a>

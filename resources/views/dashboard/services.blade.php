@@ -9,7 +9,7 @@
                 <h1 class="text-2xl font-bold text-gray-900">{{ __('Commission Services') }}</h1>
                 <p class="text-gray-600">Manage your available commission offerings</p>
             </div>
-            <a href="#"
+            <a href="{{ route('services.create') }}"
                class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150">
                 Add New Service
             </a>
@@ -33,7 +33,13 @@
                     <h3 class="text-gray-500 text-sm">Average Price</h3>
                     <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Base Price</span>
                 </div>
-                <p class="text-2xl font-bold text-gray-900">${{ number_format($services->avg('base_price'), 2) }}</p>
+                <p class="text-2xl font-bold text-gray-900">
+                    @if($services->count() > 0)
+                        {{ $services->first()->currency }} {{ number_format($services->avg('base_price'), 2) }}
+                    @else
+                        $0.00
+                    @endif
+                </p>
                 <p class="text-sm text-gray-600 mt-2">Per Commission</p>
             </div>
         </div>
@@ -58,19 +64,28 @@
                         @forelse ($services as $service)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $service->name }}</td>
-                                <td class="px-6 py-4">{{ $service->description }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">${{ number_format($service->base_price, 2) }}</td>
+                                <td class="px-6 py-4">
+                                    {{ Str::limit($service->description, 100) }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ $service->currency }} {{ number_format($service->base_price, 2) }}
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $service->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                         {{ $service->is_active ? 'Active' : 'Inactive' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                                    <form action="#" method="POST" class="inline">
+                                    <a href="{{ route('services.edit', $service) }}"
+                                       class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('services.destroy', $service) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this service?')">
+                                        <button type="submit"
+                                                class="text-red-600 hover:text-red-900"
+                                                onclick="return confirm('Are you sure you want to delete this service?')">
                                             Delete
                                         </button>
                                     </form>
@@ -79,7 +94,7 @@
                         @empty
                             <tr>
                                 <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                    No commission services found. Click "Add New Commission Service" to create one.
+                                    No commission services found. Click "Add New Service" to create one.
                                 </td>
                             </tr>
                         @endforelse
@@ -88,11 +103,11 @@
             </div>
 
             <!-- Pagination -->
-            {{-- @if($services->hasPages())
+            @if($services->hasPages())
                 <div class="p-6 border-t border-gray-200">
                     {{ $services->links() }}
                 </div>
-            @endif --}}
+            @endif
         </div>
     </div>
 @endsection
