@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CommissionController;
-
+use App\Http\Controllers\ChatController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -40,4 +40,5 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/commissions/{commission}/from-modal', [CommissionController::class, 'updateFromModal'])->name('commissions.update-from-modal');
     Route::patch('/commissions/{commission}/status', [CommissionController::class, 'updateStatus'])->name('commissions.update-status');
     Route::post('/commissions/{commission}/progress', [CommissionController::class, 'addProgressUpdate'])->name('commissions.add-progress');
+    Route::get('/inbox', [ChatController::class, 'index'])->name('inbox.index');
 });

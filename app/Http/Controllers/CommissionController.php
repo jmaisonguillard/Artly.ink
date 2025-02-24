@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Commission;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CommissionController extends Controller
 {
@@ -89,7 +90,7 @@ class CommissionController extends Controller
         $request->user()->can('view', $commission);
 
         $commission->load(['client', 'artist', 'service']);
-        return view('commissions.show', compact('commission'));
+        return view('dashboard.commissions.show', compact('commission'));
     }
 
     public function updateFromModal(Request $request, Commission $commission)
@@ -164,34 +165,41 @@ class CommissionController extends Controller
 
     public function addProgressUpdate(Request $request, Commission $commission)
     {
-        $request->user()->can('update', $commission);
-
-        $validated = $request->validate([
+        $request->validate([
+            'status' => 'required|in:sketching,inking,coloring,final_review,completed',
             'message' => 'required|string',
-            'attachments.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:10240'
+            'images.*' => 'nullable|image|max:5120' // 5MB max per image
         ]);
 
-        // Handle new attachments
-        $newAttachments = [];
-        if ($request->hasFile('attachments')) {
-            foreach ($request->file('attachments') as $file) {
-                $path = $file->store('commission-updates', 'public');
-                $newAttachments[] = $path;
+        // Handle image uploads
+        $imageUrls = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('commission-updates', 'public');
+                $imageUrls[] = Storage::url($path);
             }
         }
 
+        // Get existing progress updates or initialize empty array
         $progress_updates = $commission->progress_updates ?? [];
+
+        // Add new update
         $progress_updates[] = [
-            'message' => $validated['message'],
-            'attachments' => $newAttachments,
+            'status' => $request->status,
+            'message' => $request->message,
+            'images' => $imageUrls,
             'timestamp' => now()->toDateTimeString(),
             'user_id' => auth()->id()
         ];
 
+        // Update commission status and progress
+        $commission->status = $request->status;
+        if ($request->status === 'completed') {
+            $commission->completed_at = now();
+        }
         $commission->progress_updates = $progress_updates;
         $commission->save();
 
-        return redirect()->back()
-            ->with('success', 'Progress update added successfully!');
+        return redirect()->back()->with('success', 'Progress update added successfully!');
     }
 }
