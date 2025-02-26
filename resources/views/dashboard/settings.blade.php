@@ -60,34 +60,113 @@
                 @if(Auth::user()->is_artist)
                 <div class="bg-white rounded-xl shadow-sm">
                     <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold text-gray-900">Commission Settings</h2>
+                        <h2 class="text-xl font-semibold text-gray-900">Artist Settings</h2>
                     </div>
                     <div class="p-6">
                         <form class="space-y-6">
-                            <div>
-                                <label class="block font-medium text-sm text-gray-700">Commission Status</label>
-                                <select class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
-                                    <option>Open for Commissions</option>
-                                    <option>Closed (Busy)</option>
-                                    <option>Closed (On Break)</option>
-                                </select>
+                            <!-- Username & Professional Title -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700">Username</label>
+                                    <div class="mt-1 flex rounded-lg shadow-sm">
+                                        <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">
+                                            @
+                                        </span>
+                                        <input type="text" placeholder="artbyalex" class="flex-1 px-4 py-2 border border-gray-200 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+                                    <p class="mt-1 text-xs text-gray-500">This is your unique username on the platform</p>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700">Professional Title</label>
+                                    <input type="text" placeholder="Digital Illustrator" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
+                                    <p class="mt-1 text-xs text-gray-500">Example: Digital Artist, Character Designer</p>
+                                </div>
                             </div>
 
+                            <!-- Specialization -->
                             <div>
-                                <label class="block font-medium text-sm text-gray-700">Maximum Active Commissions</label>
-                                <input placeholder="4" type="number" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block w-40">
+                                <label class="block font-medium text-sm text-gray-700">Specialization</label>
+                                <input type="text" placeholder="Character Design" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
+                                <p class="mt-1 text-xs text-gray-500">Your primary area of expertise</p>
                             </div>
 
-                            <div>
-                                <label class="block font-medium text-sm text-gray-700">Default Response Time</label>
-                                <select class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
-                                    <option>Within 24 hours</option>
-                                    <option>Within 48 hours</option>
-                                    <option>Within 1 week</option>
-                                </select>
+                            <!-- Commission Status & Availability -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700">Commission Status</label>
+                                    <select class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
+                                        <option>Open for Commissions</option>
+                                        <option>Closed (Busy)</option>
+                                        <option>Closed (On Break)</option>
+                                        <option>By Request Only</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700">Turnaround Time</label>
+                                    <select class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
+                                        <option>Within 1 week</option>
+                                        <option>2-3 weeks</option>
+                                        <option>3-4 weeks</option>
+                                        <option>4+ weeks</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="flex items-center justify-end mt-4">
+                            <!-- Commission Limits -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700">Maximum Active Commissions</label>
+                                    <input type="number" placeholder="4" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700">Default Response Time</label>
+                                    <select class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
+                                        <option>Within 24 hours</option>
+                                        <option>Within 48 hours</option>
+                                        <option>Within 1 week</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Skills/Tags -->
+                            <div>
+                                <label class="block font-medium text-sm text-gray-700">Skills & Specialties</label>
+                                <input type="text" placeholder="Digital Art, Character Design, Illustration, Concept Art" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent mt-1 block">
+                                <p class="mt-1 text-xs text-gray-500">Separate tags with commas</p>
+                            </div>
+
+                            <!-- Social Links -->
+                            <div class="space-y-4">
+                                <label class="block font-medium text-sm text-gray-700">Social Media Links</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="bg-gray-100 p-2 rounded-lg">
+                                            <i class="fab fa-instagram w-5 h-5 text-gray-700"></i>
+                                        </div>
+                                        <input type="text" placeholder="Instagram username" class="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="bg-gray-100 p-2 rounded-lg">
+                                            <i class="fab fa-twitter w-5 h-5 text-gray-700"></i>
+                                        </div>
+                                        <input type="text" placeholder="Twitter username" class="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="bg-gray-100 p-2 rounded-lg">
+                                            <i class="fas fa-globe w-5 h-5 text-gray-700"></i>
+                                        </div>
+                                        <input type="text" placeholder="Portfolio website URL" class="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="bg-gray-100 p-2 rounded-lg">
+                                            <i class="fab fa-artstation w-5 h-5 text-gray-700"></i>
+                                        </div>
+                                        <input type="text" placeholder="ArtStation profile" class="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-end mt-6">
                                 <button type="submit" class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                     Save Changes
                                 </button>

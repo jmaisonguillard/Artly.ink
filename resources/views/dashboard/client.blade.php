@@ -5,7 +5,7 @@
     <div class="p-6 bg-gray-50">
         <!-- Welcome Section -->
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-gray-900">Welcome back, Alex!</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Welcome back, {{ auth()->user()->display_name }}!</h1>
             <p class="text-gray-600">Here's what's happening with your commissions</p>
         </div>
 
@@ -86,7 +86,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="text-purple-600 hover:text-purple-700 font-medium text-sm">View Details</button>
+                                <a href="{{ route('commissions.show', 1) }}" class="text-purple-600 hover:text-purple-700 font-medium text-sm">View Details</a>
                             </div>
                         </div>
 

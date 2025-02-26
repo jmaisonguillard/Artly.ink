@@ -13,23 +13,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::create([
-        //     'first_name' => 'Client',
-        //     'last_name' => 'User',
-        //     'email' => 'client@artly.ink',
-        //     'password' => bcrypt('secret'),
-        //     'type' => 'client',
-        //     'display_name' => 'Client User'
-        // ]);
+        User::create([
+            'first_name' => 'Client',
+            'last_name' => 'User',
+            'email' => 'client@artly.ink',
+            'username' => 'client',
+            'password' => bcrypt('secret'),
+            'type' => 'client',
+            'display_name' => 'Client User'
+        ]);
 
-        // User::create([
-        //     'first_name' => 'Artist',
-        //     'last_name' => 'User',
-        //     'email' => 'artist@artly.ink',
-        //     'password' => bcrypt('secret'),
-        //     'type' => 'artist',
-        //     'display_name' => 'Artist User'
-        // ]);
+        User::create([
+            'first_name' => 'Artist',
+            'last_name' => 'User',
+            'email' => 'artist@artly.ink',
+            'username' => 'artist',
+            'password' => bcrypt('secret'),
+            'type' => 'artist',
+            'display_name' => 'Artist User'
+        ]);
 
         $statuses = ['pending', 'sketching', 'inking', 'coloring', 'final_review', 'completed', 'cancelled'];
         $titles = [

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen bg-gray-50">
-        <div class="flex h-screen">
+    <div class="bg-gray-50" x-data="{ mobileMenuOpen: false, chatListOpen: true }">
+        <div class="flex flex-col lg:flex-row">
             <!-- Message Groups (Far Left) -->
-            <div class="w-20 bg-white border-r border-gray-200 p-3 space-y-4">
+            <div class="lg:w-20 bg-white border-r border-gray-200 flex lg:flex-col justify-between lg:justify-start p-3 space-x-4 lg:space-x-0 lg:space-y-4">
                 <!-- New Requests -->
                 <div class="relative group">
                     <div class="w-12 h-12 bg-yellow-100 rounded-2xl group-hover:rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer">
@@ -36,10 +36,16 @@
             </div>
 
             <!-- Chat List (Middle Column) -->
-            <div class="w-64 bg-gray-50 border-r border-gray-200">
+            <div class="w-full lg:w-64 bg-gray-50 border-r border-gray-200 lg:block"
+                 :class="{ 'hidden': !chatListOpen && !$screen('lg') }">
                 <!-- Group Header -->
-                <div class="p-4 border-b border-gray-200">
+                <div class="p-4 border-b border-gray-200 flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-gray-900">Active Commissions</h2>
+                    <button class="lg:hidden text-gray-500 hover:text-gray-600" @click="chatListOpen = false">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
 
                 <!-- Search Bar -->
@@ -57,9 +63,9 @@
                 </div>
 
                 <!-- Chat List -->
-                <div class="overflow-y-auto h-[calc(100vh-8rem)]">
+                <div class="overflow-y-auto h-[calc(100vh-20rem)]">
                     <!-- Example Chat Item 1 -->
-                    <div class="px-3 py-2 hover:bg-gray-100 cursor-pointer bg-white">
+                    <div class="px-3 py-2 hover:bg-gray-100 cursor-pointer bg-white" @click="chatListOpen = false">
                         <div class="flex items-center space-x-3">
                             <img src="/api/placeholder/40/40" class="w-10 h-10 rounded-full" alt="Client avatar">
                             <div class="flex-1 min-w-0">
@@ -73,7 +79,7 @@
                     </div>
 
                     <!-- Example Chat Item 2 -->
-                    <div class="px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                    <div class="px-3 py-2 hover:bg-gray-100 cursor-pointer" @click="chatListOpen = false">
                         <div class="flex items-center space-x-3">
                             <img src="/api/placeholder/40/40" class="w-10 h-10 rounded-full" alt="Client avatar">
                             <div class="flex-1 min-w-0">
@@ -93,6 +99,11 @@
                 <!-- Chat Header -->
                 <div class="p-4 border-b border-gray-200 flex items-center justify-between">
                     <div class="flex items-center space-x-3">
+                        <button class="lg:hidden text-gray-500 hover:text-gray-600 mr-2" @click="chatListOpen = true">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
                         <img src="/api/placeholder/40/40" class="w-10 h-10 rounded-full" alt="Client avatar">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Book Cover Illustration</h2>

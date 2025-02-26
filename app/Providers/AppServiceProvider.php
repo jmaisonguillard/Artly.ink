@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Commission;
 use App\Policies\CommissionPolicy;
+use App\Models\User;
+use App\Observers\UserObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Commission::class, CommissionPolicy::class);
+        User::observe(UserObserver::class);
     }
 }

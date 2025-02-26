@@ -20,11 +20,13 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
+        'username',
+        'display_name',
         'email',
         'password',
-        'type',
-        'website_url',
-        'display_name',
+        'bio',
+        'avatar',
+        'is_artist',
     ];
 
     /**
@@ -58,5 +60,24 @@ class User extends Authenticatable
     public function getIsArtistAttribute(): bool
     {
         return $this->type === 'artist';
+    }
+
+    public function artistProfile()
+    {
+        return $this->hasOne(ArtistProfile::class);
+    }
+
+    /**
+     * Get the user's avatar URL.
+     *
+     * @return string
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if (empty($this->avatar)) {
+            return 'https://ui-avatars.com/api/?name=' . urlencode($this->first_name . ' ' . $this->last_name) . '&color=7F9CF5&background=EBF4FF';
+        }
+
+        return $this->avatar;
     }
 }

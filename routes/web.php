@@ -7,6 +7,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\ChatController;
+use App\Livewire\Inbox;
+use App\Livewire\Profile;
+use App\Livewire\Settings;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -18,10 +22,11 @@ Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('aut
 Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
 Route::get('/change-password', [AuthController::class, 'changePassword'])->name('change-password');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/profile/{user}', Profile::class)->name('profile.show');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
+    Route::get('/settings', Settings::class)->name('settings');
     Route::get('/services', [DashboardController::class, 'commissionServices'])->name('services.index');
     Route::get('/services/create', [DashboardController::class, 'createService'])->name('services.create');
     Route::post('/services', [DashboardController::class, 'storeService'])->name('services.store');
@@ -40,5 +45,5 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/commissions/{commission}/from-modal', [CommissionController::class, 'updateFromModal'])->name('commissions.update-from-modal');
     Route::patch('/commissions/{commission}/status', [CommissionController::class, 'updateStatus'])->name('commissions.update-status');
     Route::post('/commissions/{commission}/progress', [CommissionController::class, 'addProgressUpdate'])->name('commissions.add-progress');
-    Route::get('/inbox', [ChatController::class, 'index'])->name('inbox.index');
+    Route::get('/inbox', Inbox::class)->name('inbox.index');
 });

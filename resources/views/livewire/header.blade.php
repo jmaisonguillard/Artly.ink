@@ -53,9 +53,9 @@
                     <div class="hidden lg:flex items-center" x-data="{ open: false }">
                         <button @click="open = !open"
                             class="flex items-center space-x-2 text-gray-600 hover:text-purple-600">
-                            <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(Auth::user()->email))) }}?s=32&d=mp"
+                            <img src="{{ Auth::user()->avatar_url }}"
                                 alt="{{ Auth::user()->display_name }}" class="h-8 w-8 rounded-full">
-                            <span class="font-medium">{{ Auth::user()->display_name }}</span>
+                            <span class="font-medium" wire:poll.5s>{{ Auth::user()->display_name }}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                 :class="{ 'transform rotate-180': open }" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"

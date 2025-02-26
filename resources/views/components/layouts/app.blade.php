@@ -21,10 +21,10 @@
 </head>
 
 <body class="font-sans antialiased bg-white">
-    <x-header />
+    <livewire:header />
 
     <main>
-        @yield('content')
+        {{ $slot }}
     </main>
 
     <x-footer />
